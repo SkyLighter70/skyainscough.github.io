@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web App | Study Sprint Coach</title>
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --accent: #a7f3d0;
+      --accent2: #7dd3fc;
+      --danger: #fca5a5;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(900px 600px at 15% 20%, #123a3b 0%, transparent 55%),
+                  radial-gradient(900px 600px at 85% 15%, #2a2146 0%, transparent 55%),
+                  linear-gradient(160deg, var(--bg), #0f1a2f);
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .top h1 {
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+
+    .nav a:hover {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 920px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .full { grid-column: 1 / -1; }
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .muted { color: var(--muted); }
+
+    .timer {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin: 10px 0;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    label {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    input[type="number"], select, input[type="text"] {
+      width: 100%;
+      max-width: 240px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.18);
+      color: var(--text);
+      outline: none;
+    }
+
+    button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.10);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .primary {
+      border-color: rgba(167, 243, 208, 0.35);
+      background: rgba(167, 243, 208, 0.12);
+    }
+
+    .primary:hover {
+      background: rgba(167, 243, 208, 0.18);
+    }
+
+    .danger {
+      border-color: rgba(252, 165, 165, 0.35);
+      background: rgba(252, 165, 165, 0.10);
+    }
+
+    .pill {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .challenge {
+      border: 1px solid rgba(125, 211, 252, 0.35);
+      background: rgba(125, 211, 252, 0.10);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    ul {
+      margin: 10px 0 0 0;
+      padding-left: 18px;
+    }
+
+    .todo-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.14);
+      margin-top: 8px;
+    }
+
+    .todo-item span {
+      word-break: break-word;
+    }
+
+    .tiny {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="top">
+      <h1>Study Coach</h1>
+      <nav class="nav">
+        <a href="scratch.html">Server Tips</a>
+        <a href="index.html">Home</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Timer</h2>
+        <p class="muted">Pick a mode, set minutes, then run focused sprints. Stats save locally.</p>
+
+        <div class="row">
+          <div>
+            <label for="mode">Mode</label><br />
+            <select id="mode">
+              <option value="focus">Focus</option>
+              <option value="break">Break</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="minutes">Minutes</label><br />
+            <input id="minutes" type="number" min="1" max="180" value="25" />
+          </div>
+        </div>
+
+        <div class="timer" id="timerDisplay">25:00</div>
+
+        <div class="row">
+          <button class="primary" id="startBtn">Start</button>
+          <button id="pauseBtn">Pause</button>
+          <button class="danger" id="resetBtn">Reset</button>
+          <span class="pill" id="statusPill">Ready</span>
+        </div>
+
+        <div class="row" style="margin-top:12px;">
+          <span class="pill">Completed Focus Sprints: <strong id="sprintCount">0</strong></span>
+          <span class="pill">Total Focus Minutes: <strong id="focusMinutes">0</strong></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Study Activity Generator</h2>
+        <p class="muted">Generate a Random Study Activity</p>
+
+        <div class="challenge" id="challengeBox">
+          <strong id="challengeTitle">Challenge</strong>
+          <p class="tiny" id="challengeText">Click “New challenge” to generate one.</p>
+        </div>
+
+        <div class="row" style="margin-top:12px;">
+          <button class="primary" id="newChallengeBtn">New challenge</button>
+          <button id="completeChallengeBtn">Mark completed</button>
+          <span class="pill">Challenge streak: <strong id="challengeStreak">0</strong></span>
+        </div>
+
+      </section>
+
+      <section class="card full">
+        <h2>Quick Task List</h2>
+        <p class="muted">A simple list tied to your sprint session. Saves locally.</p>
+
+        <div class="row">
+          <input id="todoInput" type="text" placeholder="Add a task like: Finish Stats notes Q1 to Q8" />
+          <button class="primary" id="addTodoBtn">Add</button>
+          <button class="danger" id="clearTodoBtn">Clear All</button>
+        </div>
+
+        <div id="todoList"></div>
+      </section>
+
+      <section class="card full" id="how">
+        <h2>How it works</h2>
+        <ul>
+          <li>Set Focus minutes, hit Start, and work until the timer hits zero.</li>
+          <li>When a Focus sprint finishes, your sprint count and focus minutes update automatically.</li>
+          <li>Challenges are lightweight behaviors that improve output, not gimmicks.</li>
+          <li>Everything stores in your browser using localStorage (no hosting backend required).</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const el = (id) => document.getElementById(id);
+
+    const modeEl = el("mode");
+    const minutesEl = el("minutes");
+    const timerDisplay = el("timerDisplay");
+    const statusPill = el("statusPill");
+
+    const sprintCountEl = el("sprintCount");
+    const focusMinutesEl = el("focusMinutes");
+
+    const startBtn = el("startBtn");
+    const pauseBtn = el("pauseBtn");
+    const resetBtn = el("resetBtn");
+
+    const newChallengeBtn = el("newChallengeBtn");
+    const completeChallengeBtn = el("completeChallengeBtn");
+    const challengeTitle = el("challengeTitle");
+    const challengeText = el("challengeText");
+    const challengeStreakEl = el("challengeStreak");
+
+    const todoInput = el("todoInput");
+    const addTodoBtn = el("addTodoBtn");
+    const clearTodoBtn = el("clearTodoBtn");
+    const todoList = el("todoList");
+
+    const LS_KEYS = {
+      sprintCount: "ssc_sprintCount",
+      focusMinutes: "ssc_focusMinutes",
+      challengeStreak: "ssc_challengeStreak",
+      todos: "ssc_todos"
+    };
+
+    let timer = null;
+    let remainingSeconds = 25 * 60;
+    let running = false;
+
+    function loadStats() {
+      sprintCountEl.textContent = localStorage.getItem(LS_KEYS.sprintCount) || "0";
+      focusMinutesEl.textContent = localStorage.getItem(LS_KEYS.focusMinutes) || "0";
+      challengeStreakEl.textContent = localStorage.getItem(LS_KEYS.challengeStreak) || "0";
+    }
+
+    function saveStat(key, value) {
+      localStorage.setItem(key, String(value));
+    }
+
+    function setSecondsFromInput() {
+      const mins = Math.max(1, Math.min(180, Number(minutesEl.value || 25)));
+      remainingSeconds = mins * 60;
+      renderTime();
+    }
+
+    function renderTime() {
+      const mm = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
+      const ss = String(remainingSeconds % 60).padStart(2, "0");
+      timerDisplay.textContent = mm + ":" + ss;
+    }
+
+    function setStatus(text) {
+      statusPill.textContent = text;
+    }
+
+    function tick() {
+      if (!running) return;
+      remainingSeconds -= 1;
+      renderTime();
+
+      if (remainingSeconds <= 0) {
+        stopTimer();
+        onTimerFinished();
+      }
+    }
+
+    function startTimer() {
+      if (running) return;
+      running = true;
+      setStatus("Running");
+      timer = setInterval(tick, 1000);
+    }
+
+    function stopTimer() {
+      running = false;
+      setStatus("Paused");
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      setStatus("Ready");
+      setSecondsFromInput();
+    }
+
+    function onTimerFinished() {
+      setStatus("Done");
+      const mode = modeEl.value;
+
+      if (mode === "focus") {
+        const sc = Number(localStorage.getItem(LS_KEYS.sprintCount) || 0) + 1;
+        const fm = Number(localStorage.getItem(LS_KEYS.focusMinutes) || 0) + Math.max(1, Number(minutesEl.value || 25));
+        saveStat(LS_KEYS.sprintCount, sc);
+        saveStat(LS_KEYS.focusMinutes, fm);
+        loadStats();
+      }
+
+      alert(mode.toUpperCase() + " finished. Good job. Switch mode if needed.");
+    }
+
+    const challenges = [
+      { title: "Start clean", text: "Write the single next action for your assignment in 10 words or less. Then do only that for 5 minutes." },
+      { title: "Friction removal", text: "Close 3 tabs you do not need. Put your phone out of reach for the next sprint." },
+      { title: "Recall drill", text: "Without notes, write 5 bullet points you remember about the topic. Then check what you missed." },
+      { title: "Exam mode", text: "Do 1 question timed. No pausing, no hints. Review immediately after." },
+      { title: "Explain it", text: "Teach the concept out loud like you’re tutoring a friend for 60 seconds." },
+      { title: "Error log", text: "Write your last 2 mistakes and the rule that prevents each one." },
+      { title: "Win the next 2 minutes", text: "Set a 2-minute micro-deadline: open the correct page and start the first step. No planning." },
+      { title: "Flashcards", text: "Pick 5 concepts and make flash cards for them. Go through them til it's memorized" },
+      { title: "Teach Back", text: "Pick 1 concept and explain it out loud like you’re teaching a 12 year old. If you hesitate, re learn that part and try again." },
+      { title: "Blurting", text: "Close your notes and write everything you remember about a topic for 3 minutes. Then compare to your notes and fill gaps." },
+      { title: "Pomodoro Sprint", text: "Do 25 minutes focused work, 5 minute break. Repeat 4 times, then take a longer break." },
+      { title: "Reverse Outline", text: "Turn your notes into an outline from memory, then check what sections you forgot or confused." },
+    ];
+
+    function newChallenge() {
+      const pick = challenges[Math.floor(Math.random() * challenges.length)];
+      challengeTitle.textContent = pick.title;
+      challengeText.textContent = pick.text;
+    }
+
+    function completeChallenge() {
+      const current = Number(localStorage.getItem(LS_KEYS.challengeStreak) || 0);
+      const next = current + 1;
+      saveStat(LS_KEYS.challengeStreak, next);
+      loadStats();
+      setStatus("Challenge +1");
+    }
+
+    function loadTodos() {
+      const raw = localStorage.getItem(LS_KEYS.todos);
+      const items = raw ? JSON.parse(raw) : [];
+      renderTodos(items);
+    }
+
+    function saveTodos(items) {
+      localStorage.setItem(LS_KEYS.todos, JSON.stringify(items));
+    }
+
+    function renderTodos(items) {
+      todoList.innerHTML = "";
+      if (items.length === 0) {
+        const p = document.createElement("p");
+        p.className = "tiny";
+        p.textContent = "No tasks yet. Add one above.";
+        todoList.appendChild(p);
+        return;
+      }
+
+      items.forEach((t, idx) => {
+        const row = document.createElement("div");
+        row.className = "todo-item";
+
+        const left = document.createElement("div");
+        const title = document.createElement("span");
+        title.textContent = t.text;
+        title.style.textDecoration = t.done ? "line-through" : "none";
+        title.style.color = t.done ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.92)";
+        left.appendChild(title);
+
+        const right = document.createElement("div");
+        right.className = "row";
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.textContent = t.done ? "Undo" : "Done";
+        toggleBtn.onclick = () => {
+          const items2 = [...items];
+          items2[idx] = { ...items2[idx], done: !items2[idx].done };
+          saveTodos(items2);
+          renderTodos(items2);
+        };
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "danger";
+        delBtn.textContent = "Delete";
+        delBtn.onclick = () => {
+          const items2 = items.filter((_, i) => i !== idx);
+          saveTodos(items2);
+          renderTodos(items2);
+        };
+
+        right.appendChild(toggleBtn);
+        right.appendChild(delBtn);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        todoList.appendChild(row);
+      });
+    }
+
+    function addTodo() {
+      const text = (todoInput.value || "").trim();
+      if (!text) return;
+
+      const raw = localStorage.getItem(LS_KEYS.todos);
+      const items = raw ? JSON.parse(raw) : [];
+      items.unshift({ text, done: false });
+      saveTodos(items);
+      todoInput.value = "";
+      renderTodos(items);
+    }
+
+    function clearTodos() {
+      if (!confirm("Clear all tasks?")) return;
+      saveTodos([]);
+      renderTodos([]);
+    }
+
+    minutesEl.addEventListener("change", () => { if (!running) setSecondsFromInput(); });
+    modeEl.addEventListener("change", () => { if (!running) setStatus("Ready"); });
+
+    startBtn.addEventListener("click", () => {
+      if (!running && remainingSeconds <= 0) setSecondsFromInput();
+      startTimer();
+    });
+
+    pauseBtn.addEventListener("click", () => stopTimer());
+    resetBtn.addEventListener("click", () => resetTimer());
+
+    newChallengeBtn.addEventListener("click", () => newChallenge());
+    completeChallengeBtn.addEventListener("click", () => completeChallenge());
+
+    addTodoBtn.addEventListener("click", () => addTodo());
+    todoInput.addEventListener("keydown", (e) => { if (e.key === "Enter") addTodo(); });
+    clearTodoBtn.addEventListener("click", () => clearTodos());
+
+    loadStats();
+    setSecondsFromInput();
+    loadTodos();
+    newChallenge();
+    setStatus("Ready");
+  </script>
+</body>
+</html>

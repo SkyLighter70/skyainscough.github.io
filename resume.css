@@ -1,0 +1,8 @@
+/* Light tweaks only. Bootstrap theme handles most of the look. */
+.accordion-button {
+  font-weight: 600;
+}
+
+.navbar.custom-nav {
+  background-color: #0f113f !important;
+}

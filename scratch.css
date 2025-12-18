@@ -1,0 +1,319 @@
+:root {
+  /* Background */
+  --bg-olive: #0F2A17;
+
+  /* Islands */
+  --island-brown: #6B4A2F;
+
+  /* Text */
+  --text: #F6F2E8;
+  --muted: #F6F2E8C7;      /* ~78% */
+
+  /* Gold */
+  --gold: #D4AF37;
+  --gold-soft: #D4AF3747; /* ~28% */
+
+  /* Borders + shadow */
+  --border: #D4AF3738;    /* ~22% */
+  --shadow: #00000059;    /* ~35% */
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background-color: var(--bg-olive);
+
+  /* Center “Olive Garden style” emblem made with CSS (no external image so it won’t break) */
+  background-image:
+    radial-gradient(circle at 50% 50%, #D4AF372A 0%, #D4AF3700 58%),
+    radial-gradient(circle at 50% 50%, #D4AF371A 0%, #D4AF3700 66%);
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 900px 900px;
+}
+
+/* Big centered logo overlay (pure CSS). Works like a watermark. */
+body::before {
+  content: "OG";
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  font-size: clamp(120px, 18vw, 260px);
+  color: #D4AF3714; /* subtle gold watermark */
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* A thin gold ring around the logo for “mark” feel */
+body::after {
+  content: "";
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(520px, 70vw);
+  height: min(520px, 70vw);
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border: 2px solid #D4AF371A;
+  box-shadow: 0 0 0 10px #D4AF3708;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 22px;
+  position: relative;
+  z-index: 1; /* keeps content above watermark */
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--island-brown);
+  border-radius: 16px;
+  box-shadow: 0 14px 32px var(--shadow);
+}
+
+.brand-title {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: var(--text);
+}
+
+.brand-subtitle {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid #D4AF3700;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
+.nav a:hover {
+  border-color: var(--gold-soft);
+  background: #D4AF3712;
+}
+
+.hero {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  background: var(--island-brown);
+  border-radius: 16px;
+  box-shadow: 0 14px 32px var(--shadow);
+}
+
+.hero h1 {
+  margin: 0 0 8px 0;
+}
+
+.lead {
+  margin: 0 0 12px 0;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 72ch;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0 0;
+}
+
+.pill {
+  border: 1px solid var(--border);
+  background: #0000001A;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.toc {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.toc-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.toc-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.toc-links a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.toc-links a:hover {
+  text-decoration: underline;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+@media (min-width: 920px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  #media, #tableau {
+    grid-column: 1 / -1;
+  }
+}
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--island-brown);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 14px 32px var(--shadow);
+}
+
+.card h2 {
+  margin: 0 0 10px 0;
+}
+
+.h3 {
+  margin: 14px 0 8px 0;
+  font-size: 1.05rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.callout {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--gold-soft);
+  background: #D4AF3712;
+  color: var(--text);
+}
+
+.bad {
+  color: #FFB4B4;
+  font-weight: 600;
+}
+
+.good {
+  color: #E6CF7A;
+  font-weight: 700;
+}
+
+.two-col {
+  columns: 1;
+  padding-left: 18px;
+}
+
+
+.figure {
+  margin: 0;
+}
+
+.figure img {
+  width: 60%;
+  height: auto;
+  border-radius: 14px;
+  display: block;
+  margin: 0 auto;
+  border: 0px solid var(--border);
+}
+
+.figure figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.video-wrap {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.video-wrap iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+}
+
+.bottom-links {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bottom-links a {
+  text-decoration: none;
+  color: #0F2A17;
+  background: var(--gold);
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+.bottom-links a:hover {
+  background: #E2C35A;
+}
+
+.footer {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--island-brown);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 14px 32px var(--shadow);
+}
+
+.tiny {
+  font-size: 0.92rem;
+  color: var(--muted);
+}

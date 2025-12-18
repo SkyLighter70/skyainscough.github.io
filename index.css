@@ -1,0 +1,38 @@
+.hero {
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0));
+}
+
+.hero .lead {
+  max-width: 58ch;
+}
+
+/* Make sure your CSS wins over Bootswatch */
+.navbar.custom-nav {
+  background-color: #0f113f !important;
+}
+
+/* Brand + links readable on dark */
+.navbar.custom-nav .navbar-brand,
+.navbar.custom-nav .nav-link {
+  color: #F6F2E8 !important;
+}
+
+/* Active link styling */
+.navbar.custom-nav .nav-link.active {
+  color: #D4AF37 !important;
+}
+
+/* Hover */
+.navbar.custom-nav .nav-link:hover,
+.navbar.custom-nav .nav-link:focus {
+  color: #D4AF37 !important;
+}
+
+/* Mobile hamburger visibility */
+.navbar.custom-nav .navbar-toggler {
+  border-color: #D4AF37 !important;
+}
+
+.navbar.custom-nav .navbar-toggler-icon {
+  filter: invert(1);
+}
